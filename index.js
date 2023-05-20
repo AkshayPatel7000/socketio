@@ -1,5 +1,5 @@
 const { Server } = require("socket.io");
-
+const express = require("express");
 const io = new Server(8000, {
   cors: true,
 });
@@ -7,6 +7,22 @@ const io = new Server(8000, {
 const emailToSocketIdMap = new Map();
 const socketidToEmailMap = new Map();
 
+const app = express();
+
+app.use(express.json());
+const port = process.env.PORT || 2000;
+app.get("/hello", (req, res) => {
+  res.json({
+    message: "Welcome to Musico API",
+    "API Docs":
+      "https://documenter.getpostman.com/view/17456794/U16jPS13#intro",
+  });
+});
+app.listen(port, () => {
+  /* eslint-disable no-console */
+  console.log(`Listening: http://localhost:${port}`);
+  /* eslint-enable no-console */
+});
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
   socket.on("room:join", (data) => {
